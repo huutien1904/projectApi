@@ -1,72 +1,40 @@
+import React, { Component } from "react";
 import "./App.css";
-
-function App() {
-  return (
-    <div>
-      <div className="navbar">
-        <a className="navbar-brand" >
-          CALL API
-        </a>
-        <ul className="nav navbar-nav">
-          <li className="active">
-            <a>Trang chủ</a>
-          </li>
-          <li>
-            <a>Quản lý sản phẩm</a>
-          </li>
-        </ul>
-      </div>
-
-      <div className="container">
-        <div className="row">
-          <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <button type="button" className="btn btn-info mb-10">
-              Thêm sản phầm
-            </button>
-
-            <div className="panel panel-info">
-              <div className="panel-heading">
-                <h3 className="panel-title">Danh sách sản phẩm</h3>
-              </div>
-              <div className="panel-body">
-                <table className="table table-bordered table-hover">
-                  <thead>
-                    <tr>
-                      <th>STT</th>
-                      <th>MÃ</th>
-                      <th>Tên Sản Phẩm</th>
-                      <th>Giá</th>
-                      <th>Trạng Thái</th>
-                      <th>Hành Động</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>1</td>
-                      <td>iphone XR</td>
-                      <td>86000000</td>
-                      <td>
-                        <span className="label label-warning">Còn hàng</span>
-                      </td>
-                      <td>
-                        <button type="button" className="btn btn-success mr-10">
-                          Sửa
-                        </button>
-                        <button type="button" className="btn btn-waring">
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+import Menu from "./components/Menu/Menu";
+// import ProductList from "./components/ProductList/ProductList";
+import routes from "./routes";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+class App extends Component {
+  render() {
+    return (
+      <Router>
+        <div>
+          <Menu></Menu>
+          <div className="container">
+            <div className="row">{this.showContentsMenu(routes)}</div>
           </div>
         </div>
-      </div>
-    </div>
-  );
+      </Router>
+    );
+  }
+
+  showContentsMenu = (routes) => {
+    var result = null;
+    if (routes.length > 0) {
+      result = routes.map((route, index) => {
+        return (
+          <Route
+            path={route.path}
+            key={index}
+            component={route.main}
+            exact={route.exact}
+          ></Route>
+        );
+      });
+    }
+
+    return <Switch>{result}</Switch>;
+  };
 }
 
 export default App;
