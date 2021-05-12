@@ -2,6 +2,7 @@ import React, { Component } from "react";
 class ProductItem extends Component {
   render() {
     var { product, index } = this.props;
+
     var productStatus = product.status ? "Còn hàng" : "hết hàng";
     var productClass = product.status ? "warning" : "default";
     return (
