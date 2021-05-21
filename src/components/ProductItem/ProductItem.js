@@ -1,5 +1,13 @@
+import { Link } from "react-router-dom";
 import React, { Component } from "react";
+import products from "../../reducers/products";
 class ProductItem extends Component {
+  onDeleteProduct = (id) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa ?")) {
+      // eslint-disable-next-line no-restricted-globals
+      this.props.onDelete(id);
+    }
+  };
   render() {
     var { product, index } = this.props;
 
@@ -15,10 +23,17 @@ class ProductItem extends Component {
           <span className={`label label-${productClass}`}>{productStatus}</span>
         </td>
         <td>
-          <button type="button" className="btn btn-success mr-10">
+          <Link
+            to={`/product/${product.id}/edit`}
+            className="btn btn-success mr-10"
+          >
             Sửa
-          </button>
-          <button type="button" className="btn btn-waring">
+          </Link>
+          <button
+            type="button"
+            className="btn btn-waring"
+            onClick={() => this.onDeleteProduct(product.id)}
+          >
             Xóa
           </button>
         </td>
