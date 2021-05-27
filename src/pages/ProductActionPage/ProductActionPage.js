@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import {
+  actAddProductRequest,
+  actUpdateProductRequest,
+} from "./../../actions/index";
 class ProductActionPage extends Component {
   constructor(props) {
     super(props);
@@ -43,29 +48,24 @@ class ProductActionPage extends Component {
     var { history } = this.props;
 
     if (id) {
-      axios({
-        method: "put",
-        url: `http://localhost:3000/products/${id}`,
-        data: {
-          name: txtName,
-          price: txtPrice,
-          status: chkbStatus,
-        },
-      }).then(() => {
-        history.push("/product-list");
-      });
+      this.props.actUpdateProduct(id, txtName, txtPrice, chkbStatus);
+      history.goBack();
     } else {
-      axios({
-        method: "post",
-        url: "http://localhost:3000/products",
-        data: {
-          name: txtName,
-          price: txtPrice,
-          status: chkbStatus,
-        },
-      }).then(() => {
-        history.goBack();
-      });
+      this.props.actAddProduct(txtName, txtPrice, chkbStatus);
+      history.goBack();
+
+      // axios({
+      //   method: "post",
+      //   url: "http://localhost:3000/products",
+      //   data: {
+      //     name: txtName,
+      //     price: txtPrice,
+      //     status: chkbStatus,
+      //   },
+      // }).then((res) => {
+      //   console.log(res.data);
+      //   history.goBack();
+      // });
     }
   };
   render() {
@@ -126,5 +126,14 @@ class ProductActionPage extends Component {
     );
   }
 }
-
-export default ProductActionPage;
+const mapDispatchToProps = (dispatch, props) => {
+  return {
+    actAddProduct: (name, price, status) => {
+      dispatch(actAddProductRequest(name, price, status));
+    },
+    actUpdateProduct: (id, name, price, status) => {
+      dispatch(actUpdateProductRequest(id, name, price, status));
+    },
+  };
+};
+export default connect(null, mapDispatchToProps)(ProductActionPage);
